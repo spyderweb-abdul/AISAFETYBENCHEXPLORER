@@ -1,0 +1,33 @@
+# DOI-Based Metadata Extraction Pipeline
+# ======================================
+
+# Core dependencies
+pydantic>=2.0.0
+requests>=2.31.0
+python-dateutil>=2.8.2
+
+# API clients
+arxiv>=2.1.0
+# semanticscholar>=0.8.0  # Optional: official client
+# unpywall>=0.1.0  # Optional: Unpaywall client (we use REST directly)
+feedparser>=6.0.10  # For arXiv API fallback
+
+# Existing pipeline dependencies
+instructor>=0.4.0
+openai>=1.0.0
+
+# PDF parsing (choose at least one)
+pymupdf>=1.23.0  # Basic fallback
+# marker-pdf[full]>=0.2.0  # Fast markdown conversion
+# nougat-ocr>=0.1.17  # Best for academic papers with math
+
+# Utilities
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Optional: rate limiting
+ratelimit>=2.2.1
+
+# Development
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
