@@ -1,3 +1,10 @@
+"""
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
+
+"""
+
+
 import requests
 import pandas as pd
 from datetime import datetime, timedelta

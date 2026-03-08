@@ -1,4 +1,7 @@
 """
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
+
 DOI-Based Paper Metadata Resolver
 =================================
 

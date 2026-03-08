@@ -1,3 +1,7 @@
+## License
+- **Code** (`*.py`, `requirements*.txt`): [Apache License 2.0](LICENSE-CODE)
+- **Data & Documentation** (`*.xlsx`, `*.md`): [CC-BY 4.0](LICENSE-DATA)
+
 # AISafetyBenchExplorer
 
 > **A living catalogue of AI safety benchmarks and a multi-modal extraction pipeline for structured metadata, evaluation metrics, and complexity classification.**
