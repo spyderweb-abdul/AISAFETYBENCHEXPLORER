@@ -30,6 +30,7 @@ import json
 import csv
 from datetime import datetime
 from typing import List, Dict, Any
+from dotenv import load_dotenv
 import os
 
 from doi_pipeline import OptimizedDOIPipeline
@@ -46,7 +47,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
+load_dotenv()
 
 class DOIExtractorCLI:
     """CLI wrapper for DOI-based extraction pipeline."""
@@ -322,8 +323,8 @@ def main():
     parser.add_argument('--doi-column', default='DOI', help='Column name containing DOIs in CSV (default: DOI)')
 
     # API credentials
-    parser.add_argument('--email', default='YOUR-EMAIL-ADDRESS', help='Email for Unpaywall API (or set UNPAYWALL_EMAIL env var)')
-    parser.add_argument('--s2-key', default='YOUR-s2-API-KEY', help='Semantic Scholar API key (optional, for higher rate limits)')
+    parser.add_argument('--email', default=os.getenv('EMAIL_ADDRESS'), help='Email for Unpaywall API (or set UNPAYWALL_EMAIL env var)')
+    parser.add_argument('--s2-key', default=os.getenv('S2_API_KEY'), help='Semantic Scholar API key (optional, for higher rate limits)')
     parser.add_argument('--openai-key', default=os.getenv('OPENAI_API_KEY'), help='OpenAI API key (if using --backend openai)')
 
     # LLM backend
