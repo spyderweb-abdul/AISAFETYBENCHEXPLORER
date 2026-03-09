@@ -10,12 +10,12 @@
 
 ## Project Overview
 
-AISafetyBenchExplorer is an open research tool that maintains a structured, annotated catalogue of **182+ AI safety benchmarks** for Large Language Models (LLMs). It provides:
+AISafetyBenchExplorer is an open research tool that maintains a structured, annotated catalogue of **180+ AI safety benchmarks** for Large Language Models (LLMs). It provides:
 
-1. **An Excel catalogue** (`AISafetyBenchExplorer.xlsx`) — two-sheet workbook covering benchmark metadata (Sheet 1) and evaluation metrics (Sheet 2), plus a dashboard with use-case quick filters.
+1. **An Excel catalogue** [`AISafetyBenchExplorer`](https://docs.google.com/spreadsheets/d/1g2dIbNHtMUz3ZL2q1BfnZ1yl8JYjyr0DzpmSf4zt6ro/edit?gid=896858340#gid=896858340) — two-sheet workbook covering benchmark metadata (Sheet 1) and evaluation metrics (Sheet 2), plus a dashboard with use-case quick filters.
 2. **A DOI-based Python extraction pipeline** — resolves DOIs/arXiv IDs against multiple scholarly APIs and uses an LLM to extract structured metadata.
-3. **An AI extraction master prompt** (`AISafety_Benchmark_Extraction_Master_Prompt.md`) — a reusable prompt (v1.1) for AI agents to extract metadata into the Excel template with full quality-assurance checks.
-4. **A complexity classification methodology** (`complexity-methodology.md`) — decision-tree rules for classifying benchmarks as `Popular`, `High`, `Medium`, or `Low` complexity.
+3. **An AI extraction master prompt** [`AISafety_Benchmark_Extraction_Master_Prompt.md`](AISafety_Benchmark_Extraction_Master_Prompt.md) — a reusable prompt (v1.1) for AI agents to extract metadata into the Excel template with full quality-assurance checks.
+4. **A complexity classification methodology** [`complexity-methodology.md`](complexity-methodology.md) — decision-tree rules for classifying benchmarks as `Popular`, `High`, `Medium`, or `Low` complexity.
 
 ---
 
@@ -84,11 +84,11 @@ One row per metric, with **9 columns**:
 
 All metrics use **LaTeX display notation** for `mathematical_definition` with every symbol defined inline.
 
-### Dashboard
+### Other Sheets
 
 - **Use-Case Quick Filter** — tags each benchmark with 1–3 use cases (Medical AI, Financial Services, Content Moderation, Education, General Purpose).
 - **Research Gap Heatmap** — colour-coded view of coverage gaps by task type and complexity level.
-- **Repository Activity Statistics** — GitHub stars, commit recency, and activity status for 148 benchmarks.
+- **Repository Activity Statistics** — of GitHub and HuggingFace repos: Stars/Likes, commit/modification recency, activity status, etc., for benchmarks.
 
 ---
 
@@ -151,11 +151,10 @@ For manual or agent-assisted extraction from any source (PDF, HTML, or arXiv pag
 
 ### Pipeline C — PDF-Based Pipeline (Legacy, Still Supported)
 
-The original `integrated_paperParser.py` accepts a local PDF file and uses `enhanced_pdf_parser.py` + `latex_aware_chunker.py` + `enhanced_mainExtractor.py` without any API enrichment.
+The original `integrated_paperParser.py` accepts a local PDF file and uses `pdf_parser.py` + `chunker.py` + `mainExtractor.py` without any API enrichment.
 
 ```
-PDF file → enhanced_pdf_parser.py → latex_aware_chunker.py
-        → enhanced_mainExtractor.py → metadata dict
+PDF file → pdf_parser.py → chunker.py → mainExtractor.py → metadata dict
 ```
 
 ---
@@ -185,12 +184,14 @@ cd AISAFETYBENCHEXPLORER
 pip install -r requirements_doi_pipeline.txt
 
 # Optional: advanced PDF parsers
-pip install marker-pdf[full]   # Fast Markdown conversion
+pip install marker-pdf[full]    # Fast Markdown conversion
 pip install nougat-ocr          # Best for math-heavy papers
+
+pip install ollama               # For local Ollama models
 
 # Optional: LLM backends
 pip install anthropic            # For Claude models
-pip install ollama               # For local Ollama models
+pip install openAI               # For ChatGPT models
 ```
 
 ### Environment Variables
@@ -198,7 +199,7 @@ pip install ollama               # For local Ollama models
 ```bash
 export UNPAYWALL_EMAIL="your@email.com"              # Required for Unpaywall
 export SEMANTIC_SCHOLAR_API_KEY="your_s2_key"        # Optional: higher rate limits
-export OPENAI_API_KEY="sk-..."                        # For OpenAI backend
+export OPENAI_API_KEY="sk-..."                       # For OpenAI backend
 # export ANTHROPIC_API_KEY="sk-ant-..."              # For Anthropic backend
 ```
 
