@@ -450,4 +450,9 @@ All `Task Type`, `Entry Modalities`, `Integration`, `Created By`, and `Developme
 
 ---
 
+## Author & Maintainer
+
+- **Abiodun Solanke, Ph.D.** solanke.abdullahi@gmail.com
+
+
 *Questions or issues? Open a GitHub issue or consult the inline documentation in each Python module.*
