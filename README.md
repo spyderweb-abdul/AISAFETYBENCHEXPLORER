@@ -1,8 +1,21 @@
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-2.0%2B-E92063?logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-1.0%2B-412991?logo=openai&logoColor=white)](https://platform.openai.com/)
+[![Ollama](https://img.shields.io/badge/Ollama-Local_LLM-000000?logo=ollama&logoColor=white)](https://ollama.ai/)
+[![Instructor](https://img.shields.io/badge/Instructor-0.4%2B-FF6B6B)](https://python.useinstructor.com/)
+[![PyMuPDF](https://img.shields.io/badge/PyMuPDF-1.23%2B-4CAF50)](https://pymupdf.readthedocs.io/)
+[![Semantic Scholar](https://img.shields.io/badge/Semantic_Scholar-API-1857B6)](https://www.semanticscholar.org/product/api)
+[![arXiv API](https://img.shields.io/badge/arXiv-API-B31B1B?logo=arxiv&logoColor=white)](https://arxiv.org/help/api/)
+[![pytest](https://img.shields.io/badge/pytest-7.4%2B-0A9EDC?logo=pytest&logoColor=white)](https://pytest.org/)
+[![Excel](https://img.shields.io/badge/Excel-Catalogue-217346?logo=microsoft-excel&logoColor=white)](https://docs.google.com/spreadsheets/d/1g2dIbNHtMUz3ZL2q1BfnZ1yl8JYjyr0DzpmSf4zt6ro)
+[![License: Apache 2.0](https://img.shields.io/badge/License_(Code)-Apache_2.0-D22128?logo=apache&logoColor=white)](LICENSE-CODE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License_(Data)-CC_BY_4.0-EF9421?logo=creative-commons&logoColor=white)](LICENSE-DATA)
+
 ## License
 - **Code** (`*.py`, `requirements*.txt`): [Apache License 2.0](LICENSE-CODE)
 - **Data & Documentation** (`*.xlsx`, `*.md`): [CC-BY 4.0](LICENSE-DATA)
 
-# AISafetyBenchExplorer
+# AISafetyBenchExplorer[v1.1]
 
 > **A living catalogue of AI safety benchmarks and a multi-modal extraction pipeline for structured metadata, evaluation metrics, and complexity classification.**
 

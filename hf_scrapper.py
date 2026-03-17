@@ -1,10 +1,7 @@
 """
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
-
 """
-
-
 import requests
 import pandas as pd
 from huggingface_hub import HfApi
@@ -13,10 +10,7 @@ import time
 import re
 
 # Load your benchmark data
-df = pd.read_excel(
-    "Copy-of-AISafetyBenchExplorer.xlsx",
-    sheet_name='Safety Evaluation Benchmarks'
-)
+df = pd.read_excel("Copy-of-AISafetyBenchExplorer.xlsx", sheet_name='Safety Evaluation Benchmarks')
 
 # Initialize APIs
 hf_api = HfApi()
@@ -30,11 +24,6 @@ github_headers = {
 }
 if GITHUB_TOKEN:
     github_headers["Authorization"] = f"token {GITHUB_TOKEN}"
-
-
-# ============================================================================
-# MODALITY MAPPING
-# ============================================================================
 
 MODALITY_KEYWORDS = {
     'Prompts': ['prompt', 'query', 'instruction'],
@@ -54,10 +43,6 @@ MODALITY_KEYWORDS = {
     'Anecdotes': ['anecdote'],
     'Transcripts': ['transcript', 'utterance']
 }
-
-# ============================================================================
-# LANGUAGE MAPPING
-# ============================================================================
 
 LANGUAGE_CODE_MAP = {
     'en': 'English',
@@ -114,7 +99,7 @@ def infer_integration_option(repo_type, tags, description, repo_id):
 
     combined_text = f"{str(tags)} {str(description)} {str(repo_id)}".lower()
 
-    # === HuggingFace datasets ===
+    # HuggingFace datasets
     if repo_type == 'huggingface':
         # Check for datasets library support (strong indicator of API access)
         if 'library:datasets' in str(tags):
@@ -134,7 +119,7 @@ def infer_integration_option(repo_type, tags, description, repo_id):
         # Default for HF datasets: API (most HF datasets can be loaded programmatically)
         return 'API'
 
-    # === GitHub repositories ===
+    # GitHub repositories
     elif repo_type == 'github':
         # Check for API-related keywords in description/repo name
         api_indicators = [
@@ -157,7 +142,7 @@ def infer_integration_option(repo_type, tags, description, repo_id):
         # Default for GitHub: Export (most repos require cloning/downloading)
         return 'Export'
 
-    # === Kaggle datasets ===
+    # Kaggle datasets
     elif repo_type == 'kaggle':
         # Kaggle datasets can be accessed via Kaggle API
         if 'kaggle api' in combined_text or 'kaggle datasets' in combined_text:
@@ -214,11 +199,6 @@ def infer_modalities_from_tags_and_desc(tags, description, benchmark_name, entry
         return ', '.join(sorted(modalities_found))
 
     return None
-
-
-# ============================================================================
-# URL PARSING FUNCTIONS
-# ============================================================================
 
 def parse_huggingface_url(url):
     """Extract dataset owner and name from Hugging Face URL"""
@@ -321,10 +301,6 @@ def detect_repo_type(url):
         return 'unknown'
 
 
-# ============================================================================
-# HUGGING FACE METADATA EXTRACTION
-# ============================================================================
-
 def get_hf_dataset_info(repo_id):
     """Get comprehensive dataset metadata from Hugging Face"""
     try:
@@ -422,10 +398,6 @@ def extract_hf_size(dataset_info):
         return None
 
 
-# ============================================================================
-# GITHUB METADATA EXTRACTION
-# ============================================================================
-
 def get_github_repo_info(owner, repo):
     """Get GitHub repository metadata"""
     try:
@@ -462,10 +434,6 @@ def get_github_repo_info(owner, repo):
         return None
 
 
-# ============================================================================
-# KAGGLE METADATA EXTRACTION (Limited - Kaggle doesn't have public API)
-# ============================================================================
-
 def get_kaggle_dataset_info(owner, dataset_name):
     """Get Kaggle dataset metadata (limited without API key)"""
     try:
@@ -479,10 +447,6 @@ def get_kaggle_dataset_info(owner, dataset_name):
         print(f"      Error getting Kaggle data: {str(e)}")
         return None
 
-
-# ============================================================================
-# UTILITY FUNCTIONS
-# ============================================================================
 
 def get_activity_status(last_modified):
     """Determine if repository is Active or Stale"""
@@ -577,11 +541,6 @@ def infer_dev_purpose(repo_id, description, tags):
             return None
     except:
         return None
-
-
-# ============================================================================
-# MAIN PROCESSING LOGIC
-# ============================================================================
 
 print(f"Processing {len(df)} benchmarks...")
 print("=" * 100)
@@ -689,10 +648,10 @@ for idx, row in df.iterrows():
                 result['Repo_ID']
             )
 
-            print(f"   Downloads: {result['Downloads_30d']}, Likes: {result['Likes_Stars']}")
-            print(f"   Modalities: {result['Entry_Modalities']}")
-            print(f"   Language: {result['Language_Support']}")
-            print(f"   Integration: {result['Integration_Option']}")
+            print(f"Downloads: {result['Downloads_30d']}, Likes: {result['Likes_Stars']}")
+            print(f"Modalities: {result['Entry_Modalities']}")
+            print(f"Language: {result['Language_Support']}")
+            print(f"Integration: {result['Integration_Option']}")
 
         elif metadata.get('source') == 'github':
             result['Likes_Stars'] = metadata.get('stars', 0)
@@ -725,19 +684,19 @@ for idx, row in df.iterrows():
                 result['Repo_ID']
             )
 
-            print(f"   Stars: {result['Likes_Stars']}")
-            print(f"   Modalities: {result['Entry_Modalities']}")
-            print(f"   Integration: {result['Integration_Option']}")
+            print(f"Stars: {result['Likes_Stars']}")
+            print(f"Modalities: {result['Entry_Modalities']}")
+            print(f"Integration: {result['Integration_Option']}")
 
         elif metadata.get('source') == 'kaggle':
             # Kaggle defaults
             result['Integration_Option'] = 'Export'
             result['Entry_Modalities'] = original_entry_modalties
-            print(f"   Integration: {result['Integration_Option']} (Kaggle default)")
+            print(f"Integration: {result['Integration_Option']} (Kaggle default)")
     else:
         # Use original entry modalities if no metadata available
         result['Entry_Modalities'] = original_entry_modalties
-        print(f"   No metadata available")
+        print(f"No metadata available")
 
     results.append(result)
 
@@ -807,11 +766,11 @@ with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
 
 print(f"\nResults saved to: {output_file}")
 print(f"\nSummary:")
-print(f"  Total: {total}")
-print(f"  Hugging Face: {hf_count}")
-print(f"  GitHub: {gh_count}")
-print(f"  Kaggle: {kg_count}")
-print(f"  Active: {active}")
-print(f"  Stale: {stale}")
-print(f"  API: {api_count}")
+print(f"Total: {total}")
+print(f"Hugging Face: {hf_count}")
+print(f"GitHub: {gh_count}")
+print(f"Kaggle: {kg_count}")
+print(f"Active: {active}")
+print(f"Stale: {stale}")
+print(f"API: {api_count}")
 rt: {export_count}")

@@ -136,12 +136,12 @@ class DOIMetadataResolver:
             return ("doi", doi_match.group(0))
 
         # arXiv patterns
-        # New format: YYMM.NNNNN or YYMM.NNNNNN
+        # ormat: YYMM.NNNNN or YYMM.NNNNNN
         arxiv_new = re.search(r'(\d{4}\.\d{4,5})', identifier)
         if arxiv_new:
             return ("arxiv", arxiv_new.group(1))
 
-        # Old format: arch-ive/YYMMNNN
+        # format: arch-ive/YYMMNNN
         arxiv_old = re.search(r'([a-z\-]+/\d{7})', identifier, re.IGNORECASE)
         if arxiv_old:
             return ("arxiv", arxiv_old.group(1))

@@ -2,9 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
 
-Enhanced PDF Parser with Adaptive Backend Selection
-===================================================
-
 IMPROVEMENTS:
 1. Intelligent Marker vs Nougat selection based on content type
 2. GROBID integration for structured metadata pre-extraction
@@ -128,11 +125,7 @@ class EnhancedPDFParser:
         else:
             logger.info(f"Available backends: {', '.join(available)}")
 
-    def parse_pdf(
-        self,
-        pdf_path: str,
-        extract_grobid_metadata: bool = True
-    ) -> Tuple[str, str, Optional[Dict]]:
+    def parse_pdf(self, pdf_path: str, extract_grobid_metadata: bool = True) -> Tuple[str, str, Optional[Dict]]:
         """
         Parse PDF using best available method with adaptive backend selection.
 
@@ -172,11 +165,7 @@ class EnhancedPDFParser:
 
         return text, format_hint, grobid_metadata
 
-    def _parse_with_adaptive_backend(
-        self,
-        pdf_path: Path,
-        is_math_heavy: bool
-    ) -> Tuple[str, str]:
+    def _parse_with_adaptive_backend(self, pdf_path: Path, is_math_heavy: bool) -> Tuple[str, str]:
         """Select and use appropriate parsing backend"""
         #if self.enable_grobid:
             #text, fmt = self.grobid_parser.extract_full_text(str(pdf_path))
@@ -415,12 +404,7 @@ class EnhancedPDFParser:
             raise
 
 
-def parse_pdf_to_markdown(
-    pdf_path: str,
-    prefer_nougat: bool = False,
-    nougat_timeout: int = 300,
-    enable_grobid: bool = True
-) -> Tuple[str, str, Optional[Dict]]:
+def parse_pdf_to_markdown(pdf_path: str, prefer_nougat: bool = False, nougat_timeout: int = 300, enable_grobid: bool = True) -> Tuple[str, str, Optional[Dict]]:
     """
     Convenience function to parse PDF with best available method.
 
@@ -433,9 +417,5 @@ def parse_pdf_to_markdown(
     Returns:
         (text, format_hint, grobid_metadata) tuple
     """
-    parser = EnhancedPDFParser(
-        prefer_nougat=prefer_nougat,
-        nougat_timeout=nougat_timeout,
-        enable_grobid=enable_grobid
-    )
+    parser = EnhancedPDFParser(prefer_nougat=prefer_nougat, nougat_timeout=nougat_timeout, enable_grobid=enable_grobid)
     return parser.parse_pdf(pdf_path, extract_grobid_metadata=enable_grobid)

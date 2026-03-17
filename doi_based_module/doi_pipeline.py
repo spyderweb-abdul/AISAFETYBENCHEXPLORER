@@ -5,7 +5,6 @@
 Optimized DOI-Based Extraction Pipeline
 ========================================
 
-IMPROVEMENTS OVER ORIGINAL:
 1.  Integrated enhanced repository URL extractor (fixes empty Code/Dataset Repository)
 2.  Uses unified_models.py (no more api_models.py + models.py confusion)
 3.  Streamlined full-text acquisition with better error handling
@@ -39,11 +38,6 @@ from repo_extractor import EnhancedRepositoryExtractor
 from grobid_parser import GROBIDParser
 
 logger = logging.getLogger(__name__)
-
-
-# ============================================================================
-# EXPANDED TASK TYPES TAXONOMY
-# ============================================================================
 
 APPROVED_TASK_TYPES = [
     # Core Safety Categories
@@ -85,10 +79,6 @@ APPROVED_TASK_TYPES = [
     'Capabilities', 'Language'
 ]
 
-
-# ============================================================================
-# EXPANDED EVALUATION METRICS CATALOGUE
-# ============================================================================
 
 KNOWN_EVALUATION_METRICS = [
     # Accuracy-based
@@ -175,11 +165,6 @@ KNOWN_EVALUATION_METRICS = [
     'Prompt Harmfulness Score', 'Failure Rate',
 ]
 
-
-# ============================================================================
-# OPTIMIZED DOI PIPELINE CLASS
-# ============================================================================
-
 class OptimizedDOIPipeline:
     """
     Optimized extraction pipeline with enhanced repository URL extraction.
@@ -225,7 +210,7 @@ class OptimizedDOIPipeline:
         self.pdf_parser = EnhancedPDFParser(prefer_nougat=False, enable_grobid=True)
         logger.info("PDF parser")
 
-        # NEW: Repository extractor
+        # Repository extractor
         self.repo_extractor = EnhancedRepositoryExtractor()
         logger.info("Repository URL extractor (NEW)")
 
@@ -399,14 +384,10 @@ class OptimizedDOIPipeline:
         )
         
         return extracted, quality, api_metadata
-
-
         
     def process_from_doi(self, identifier: str, extract_full_text: bool = True, save_pdf: bool = False, output_dir: Optional[Path] = None) -> Tuple[Optional[Dict[str, Any]], QualityAssessment, AggregatedPaperMetadata]:
         """
         Complete extraction pipeline from DOI/arXiv ID.
-
-        ENHANCED with repository URL extraction to solve empty field issue.
 
         Args:
             identifier: DOI, arXiv ID, or Semantic Scholar ID
@@ -421,7 +402,7 @@ class OptimizedDOIPipeline:
         logger.info(f"Processing: {identifier}")
         logger.info("=" * 80)
 
-        # ===== PHASE 1: API Metadata Resolution =====
+        # API Metadata Resolution
         logger.info("Phase 1: Resolving via APIs...")
         api_metadata = self.resolver.resolve(identifier)
 
@@ -431,7 +412,7 @@ class OptimizedDOIPipeline:
 
         self._log_api_results(api_metadata)
 
-        # ===== PHASE 2: Full-Text Acquisition =====
+        # Full-Text Acquisition
         full_text = None
         format_hint = "text"
 
@@ -447,7 +428,7 @@ class OptimizedDOIPipeline:
         else:
             logger.info("Phase 2: Skipping full text (not available or requested)")
 
-        # ===== PHASE 3: LLM Metadata Extraction =====
+        # LLM Metadata Extraction
         logger.info("Phase 3: LLM metadata extraction...")
 
         if full_text:
@@ -459,11 +440,11 @@ class OptimizedDOIPipeline:
             logger.error(" Extraction failed")
             return {}, self._failed_quality(), api_metadata
 
-        # ===== PHASE 4: Enhanced Repository URL Extraction (NEW!) =====
+        # Repository URL Extraction
         logger.info("Phase 4: Enhanced repository URL extraction...")
         extracted = self._enhance_with_repository_urls(extracted, full_text or "", api_metadata)
 
-        # ===== PHASE 5: Cross-Validation =====
+        # Cross-Validation
         logger.info("Phase 5: Cross-validation with API metadata...")
         quality = self._cross_validate(extracted, quality, api_metadata)
 
@@ -476,7 +457,7 @@ class OptimizedDOIPipeline:
     def _enhance_with_repository_urls(self, extracted: Dict[str, Any], full_text: str, 
                                       api_metadata: AggregatedPaperMetadata) -> Dict[str, Any]:
         """
-        NEW METHOD: Enhance extraction with repository URLs.
+        Enhance extraction with repository URLs.
 
         This solves the core issue: Code Repository and Dataset Repository
         were empty in previous versions.
@@ -573,9 +554,7 @@ class OptimizedDOIPipeline:
                 response.close()
                 
                 
-    def _compute_quality_score(self, metadata: BenchmarkMetadata, 
-                              sections: Dict[str, str], 
-                              urls: URLExtraction) -> QualityAssessment:
+    def _compute_quality_score(self, metadata: BenchmarkMetadata, sections: Dict[str, str], urls: URLExtraction) -> QualityAssessment:
         """Compute quality score for extracted metadata."""
 
         # Completeness score

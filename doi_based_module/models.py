@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
 
-
 Unified Data Models for AI Safety Benchmark Metadata Extraction
 ================================================================
 
@@ -13,18 +12,11 @@ Models:
 - API Response Models: Semantic Scholar, arXiv, Unpaywall, Crossref
 - Benchmark Models: BenchmarkMetadata, EvaluationMetric, QualityAssessment
 - Unified: AggregatedPaperMetadata
-
-Author: Optimized for AI Safety Evals Project
 """
 
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 from datetime import datetime
-
-
-# ============================================================================
-# API RESPONSE MODELS (Semantic Scholar, arXiv, Unpaywall, Crossref)
-# ============================================================================
 
 class SemanticScholarAuthor(BaseModel):
     """Author metadata from Semantic Scholar API"""
@@ -154,10 +146,6 @@ class CrossrefResponse(BaseModel):
     is_referenced_by_count: Optional[int] = 0
     license: Optional[List[Dict[str, Any]]] = []
 
-
-# ============================================================================
-# BENCHMARK EXTRACTION MODELS
-# ============================================================================
 
 class EvaluationMetric(BaseModel):
     """
@@ -421,11 +409,6 @@ class QualityAssessment(BaseModel):
         description="Detailed rationale for human review recommendation"
     )
 
-
-# ============================================================================
-# AGGREGATED METADATA MODEL (Unifies API + LLM Extraction)
-# ============================================================================
-
 class AggregatedPaperMetadata(BaseModel):
     """
     Unified paper metadata aggregated from multiple sources.
@@ -439,62 +422,62 @@ class AggregatedPaperMetadata(BaseModel):
 
     Serves as the comprehensive metadata object throughout the pipeline.
     """
-    # ========== Identifiers ==========
+    # Identifiers
     doi: Optional[str] = None
     arxiv_id: Optional[str] = None
     s2_paper_id: Optional[str] = None
     corpus_id: Optional[int] = None
 
-    # ========== Core Metadata ==========
+    # Core Metadata
     title: str
     authors: List[str] = []  # Normalized format: "Last, First" or "Full Name"
     year: Optional[int] = None
     abstract: Optional[str] = None
 
-    # ========== Publication Venue ==========
+    # Publication Venue
     venue: Optional[str] = None
     venue_type: Optional[str] = None  # 'conference', 'journal', 'workshop', etc.
     publisher: Optional[str] = None
     journal: Optional[str] = None
 
-    # ========== URLs (Paper Access) ==========
+    # URLs (Paper Access)
     paper_url: Optional[str] = None  # Primary landing page
     arxiv_url: Optional[str] = None
     pdf_url: Optional[str] = None
     s2_url: Optional[str] = None
     doi_url: Optional[str] = None
 
-    # ========== Repository URLs (Code & Data) ==========
+    # Repository URLs (Code & Data)
     github_url: Optional[str] = None
     huggingface_url: Optional[str] = None
     kaggle_url: Optional[str] = None
     dataset_url: Optional[str] = None
     demo_url: Optional[str] = None
 
-    # ========== Impact Metrics ==========
+    # Impact Metrics
     citation_count: int = 0
     reference_count: int = 0
     influential_citation_count: int = 0
 
-    # ========== Open Access Status ==========
+    # Open Access Status
     is_open_access: bool = False
     oa_status: Optional[str] = None  # 'gold', 'green', 'hybrid', 'bronze', 'closed'
     oa_pdf_url: Optional[str] = None
     license: Optional[str] = None
 
-    # ========== Fields of Study ==========
+    # Fields of Study
     fields_of_study: List[str] = []
     primary_category: Optional[str] = None  # arXiv primary category
 
-    # ========== Dates ==========
+    # Dates
     publication_date: Optional[str] = None
     updated_date: Optional[str] = None
 
-    # ========== Source Tracking ==========
+    # Source Tracking
     data_sources: List[str] = []  # e.g., ['semantic_scholar', 'arxiv', 'unpaywall']
     api_query_timestamp: Optional[datetime] = None
 
-    # ========== Quality Flags ==========
+    # Quality Flags
     has_abstract: bool = False
     has_full_text_access: bool = False
     metadata_completeness_score: float = 0.0  # 0-1 scale

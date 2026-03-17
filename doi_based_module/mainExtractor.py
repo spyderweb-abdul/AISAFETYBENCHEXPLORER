@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
 
-
 Enhanced Paper Metadata Extractor with Multi-Pass Extraction
 =============================================================
 
@@ -13,8 +12,6 @@ MAJOR IMPROVEMENTS:
 4. Enhanced validation and quality scoring
 5. Targeted extraction for missing fields
 
-Author: Optimized for AI Safety Evals Project
-Date: January 2026
 """
 
 import os
@@ -34,9 +31,6 @@ from chunker import LaTeXAwareChunker
 
 logger = logging.getLogger(__name__)
 
-# =============================================================================
-# FEW-SHOT EXAMPLES FOR EVALUATION METRICS
-# =============================================================================
 
 FEW_SHOT_METRIC_EXAMPLES = """
 EXAMPLE 1 - Attack Success Rate:
@@ -92,10 +86,6 @@ methodological_details:
 
 NOW EXTRACT METRICS FROM THE PAPER BELOW FOLLOWING THIS FORMAT:
 """
-
-# =============================================================================
-# TASK TYPE VALIDATOR
-# =============================================================================
 
 class TaskTypeValidator:
     """
@@ -189,10 +179,6 @@ class TaskTypeValidator:
 
         return None
 
-# =============================================================================
-# URL VALIDATOR
-# =============================================================================
-
 class URLValidator:
     """Validate extracted URLs relate to actual benchmarks"""
 
@@ -280,9 +266,6 @@ class URLValidator:
         except:
             return False
 
-# =============================================================================
-# FORMULA QUALITY SCORER
-# =============================================================================
 
 class FormulaQualityScorer:
     """Score quality of extracted mathematical formulas"""
@@ -371,17 +354,10 @@ class FormulaQualityScorer:
 
         return any([has_fraction, has_power, has_subscript, has_summation])
 
-# =============================================================================
-# BENCHMARK NAME EXTRACTION MODEL
-# =============================================================================
 
 class BenchmarkNameExtraction(BaseModel):
     """Simple model for extracting benchmark name"""
     benchmark_name: str
-
-# =============================================================================
-# ENHANCED PAPER METADATA EXTRACTOR WITH MULTI-PASS
-# =============================================================================
 
 class EnhancedPaperMetadataExtractor:
     """
@@ -787,13 +763,7 @@ class EnhancedPaperMetadataExtractor:
 
         return missing
 
-    def _targeted_extraction(
-        self,
-        sections: Dict[str, str],
-        existing_result: BenchmarkMetadata,
-        missing_fields: List[str],
-        formulas: List[str]
-    ) -> BenchmarkMetadata:
+    def _targeted_extraction(self, sections: Dict[str, str], existing_result: BenchmarkMetadata, missing_fields: List[str], formulas: List[str]) -> BenchmarkMetadata:
         """Targeted extraction focusing on missing fields only"""
 
         focused_prompt = f"""
@@ -841,11 +811,7 @@ class EnhancedPaperMetadataExtractor:
             logger.error(f"Targeted extraction failed: {e}")
             return existing_result
 
-    def _merge_extraction_results(
-        self,
-        initial: BenchmarkMetadata,
-        refined: BenchmarkMetadata
-    ) -> BenchmarkMetadata:
+    def _merge_extraction_results(self, initial: BenchmarkMetadata, refined: BenchmarkMetadata) -> BenchmarkMetadata:
         """Merge two extraction results, preferring more complete data"""
 
         # Merge metrics: combine and deduplicate
@@ -877,11 +843,7 @@ class EnhancedPaperMetadataExtractor:
 
         return initial
 
-    def _merge_metrics(
-        self,
-        result: BenchmarkMetadata,
-        formula_metrics: List[EvaluationMetric]
-    ) -> BenchmarkMetadata:
+    def _merge_metrics(self, result: BenchmarkMetadata, formula_metrics: List[EvaluationMetric]) -> BenchmarkMetadata:
         """Merge formula-extracted metrics into main result"""
 
         metric_dict = {m.metric_name: m for m in result.evaluation_metrics}
@@ -922,12 +884,7 @@ class EnhancedPaperMetadataExtractor:
         logger.info(f"Dataset Size: {result.dataset_size if result.dataset_size else 'MISSING'}")
         logger.info(f"Task Types: {len(result.task_types)}")
 
-    def _extract_benchmark_name_dedicated(
-        self,
-        title: str,
-        abstract: str,
-        full_text: str = ""
-    ) -> str:
+    def _extract_benchmark_name_dedicated(self, title: str, abstract: str, full_text: str = "") -> str:
         """Enhanced benchmark name extraction"""
         intro_text = f"{title}\n\n{abstract}"[:1500]
 
@@ -1006,8 +963,6 @@ class EnhancedPaperMetadataExtractor:
         }
 
         return template_dict
-
-
 
     def _regex_benchmark_name_extraction(self, title: str, intro_text: str) -> str:
         """Regex-based name extraction fallback"""
