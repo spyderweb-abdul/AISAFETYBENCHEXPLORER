@@ -2,9 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
 
-Enhanced LaTeX-Aware Chunker with Critical Fixes
-================================================
-
 FIXES APPLIED:
 1. Multi-strategy ArXiv URL extraction (4 strategies)
 2. Dataset size extraction with validation

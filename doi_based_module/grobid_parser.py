@@ -78,7 +78,7 @@ class GROBIDParser:
         try:
             with open(pdf_path, 'rb') as pdf_file:
                 files = {'input': pdf_file}
-                headers = {"Accept": "application/xml"}  # force TEI XML [page:1][page:0]
+                headers = {"Accept": "application/xml"}  # force TEI XML
 
                 response = requests.post(
                     f"{self.grobid_url}/api/processHeaderDocument",

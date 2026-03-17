@@ -127,7 +127,7 @@ class EnhancedRepositoryExtractor:
             logger.info("Strategy 2 (Section Extraction) found complete URLs")
             return result
 
-        # Strategy 3: Papers With Code API (NEW!)
+        # Strategy 3: Papers With Code API
         if arxiv_id or paper_title:
             pwc_result = self._strategy_3_papers_with_code(
                 arxiv_id=arxiv_id,
@@ -243,13 +243,9 @@ class EnhancedRepositoryExtractor:
         combined_text = '\n\n'.join(priority_sections)
         return self._strategy_1_pattern_matching(combined_text)
 
-    def _strategy_3_papers_with_code(
-        self,
-        arxiv_id: Optional[str] = None,
-        paper_title: Optional[str] = None
-    ) -> RepositoryURLs:
+    def _strategy_3_papers_with_code(self, arxiv_id: Optional[str] = None, paper_title: Optional[str] = None) -> RepositoryURLs:
         """
-        NEW: Strategy 3 - Query Papers With Code API for GitHub repositories.
+        Strategy 3 - Query Papers With Code API for GitHub repositories.
 
         Papers With Code indexes 50,000+ papers with associated code repos.
         """
