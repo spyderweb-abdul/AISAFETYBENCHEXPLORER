@@ -23,9 +23,9 @@
 
 ## Project Overview
 
-AISafetyBenchExplorer is an open research tool that maintains a structured, annotated catalogue of **180+ AI safety benchmarks** for Large Language Models (LLMs). It provides:
+AISafetyBenchExplorer is an open research tool that maintains a structured, annotated catalogue of **~200 AI safety benchmarks** for Large Language Models (LLMs). It provides:
 
-1. **An Excel catalogue** [`AISafetyBenchExplorer`](https://docs.google.com/spreadsheets/d/14QTwwkh7sHQfhDXoRDYXErN6wqZQFmCb6ReSFR2JmKs/edit?gid=896858340#gid=896858340) — two-sheet workbook covering benchmark metadata (Sheet 1) and evaluation metrics (Sheet 2), plus a dashboard with use-case quick filters.
+1. **An Excel catalogue** [`AISafetyBenchExplorer`](https://docs.google.com/spreadsheets/d/14QTwwkh7sHQfhDXoRDYXErN6wqZQFmCb6ReSFR2JmKs/edit?gid=896858340#gid=896858340) — multi-sheet workbook covering benchmark metadata, evaluation metrics catalogue, benchmark paper metadata, an executive dashboard containing meta-analyis of the catalogue, and so on.
 2. **A DOI-based Python extraction pipeline** — resolves DOIs/arXiv IDs against multiple scholarly APIs and uses an LLM to extract structured metadata.
 3. **An AI extraction master prompt** [`AISafety_Benchmark_Extraction_Master_Prompt.md`](AISafety_Benchmark_Extraction_Master_Prompt.md) — a reusable prompt (v1.1) for AI agents to extract metadata into the Excel template with full quality-assurance checks.
 4. **A complexity classification methodology** [`complexity-methodology.md`](complexity-methodology.md) — decision-tree rules for classifying benchmarks as `Popular`, `High`, `Medium`, or `Low` complexity.
