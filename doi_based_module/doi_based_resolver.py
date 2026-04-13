@@ -503,4 +503,4 @@ class DOIMetadataResolver:
         if metadata.github_url:
             score += weights["github"]
 
-      return round(score, 2)
+        return round(score, 2)

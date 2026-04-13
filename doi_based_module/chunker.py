@@ -442,4 +442,4 @@ class LaTeXAwareChunker:
                 except ValueError:
                     continue
 
-   return None
+        return None
