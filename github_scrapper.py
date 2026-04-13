@@ -3,8 +3,6 @@
 # Copyright (c) 2025-2026 AISafetyBenchExplorer Contributors
 
 """
-
-
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
@@ -19,12 +17,15 @@ load_dotenv()
 # GitHub API token (replace with your actual token)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
-# Headers for GitHub API
+if not GITHUB_TOKEN:
+    raise EnvironmentError(
+        "GITHUB_TOKEN not found. Add it to your .env file as: GITHUB_TOKEN=ghp_xxx"
+    )
+
 headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
+    "Authorization": f"Bearer {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.v3+json"
 }
-
 def parse_github_url(url):
     """Extract owner and repo name from GitHub URL"""
     if not url or pd.isna(url):
@@ -210,7 +211,7 @@ with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
     # Stars distribution
     avg_stars = final_df[final_df['GitHub Stars'] > 0]['GitHub Stars'].mean()
     max_stars = final_df['GitHub Stars'].max()
-    
+   
     summary_data = [
         ['Metric', 'Count', 'Percentage'],
         ['Total Benchmarks', total_benchmarks, '100%'],
