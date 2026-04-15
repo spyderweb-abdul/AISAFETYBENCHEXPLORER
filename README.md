@@ -17,7 +17,7 @@
 
 # AISafetyBenchExplorer[v1.1]
 
-> **A living catalogue of AI safety benchmarks and a multi-modal extraction pipeline for structured metadata, evaluation metrics, and complexity classification.**
+> A living catalogue of AI safety benchmarks and a metadata extraction toolkit for turning papers, DOIs, arXiv records, and benchmark repositories into structured benchmark records, metric records, and complexity annotations.
 
 ---
 
@@ -25,7 +25,7 @@
 
 AISafetyBenchExplorer is an open research tool that maintains a structured, annotated catalogue of **~200 AI safety benchmarks** for Large Language Models (LLMs). It provides:
 
-1. **An Excel catalogue** [`AISafetyBenchExplorer`](https://docs.google.com/spreadsheets/d/14QTwwkh7sHQfhDXoRDYXErN6wqZQFmCb6ReSFR2JmKs/edit?gid=896858340#gid=896858340) — multi-sheet workbook covering benchmark metadata, evaluation metrics catalogue, benchmark paper metadata, an executive dashboard containing meta-analyis of the catalogue, and so on.
+1. **An workbook-backed benchmark catalogue** [`AISafetyBenchExplorer`](https://tinyurl.com/AISafetyBenchExplorer) — multi-sheet workbook covering benchmark metadata, evaluation metrics catalogue, benchmark paper metadata, an executive dashboard containing meta-analyis of the catalogue, and so on.
 2. **A DOI-based Python extraction pipeline** — resolves DOIs/arXiv IDs against multiple scholarly APIs and uses an LLM to extract structured metadata.
 3. **An AI extraction master prompt** [`AISafety_Benchmark_Extraction_Master_Prompt.md`](AISafety_Benchmark_Extraction_Master_Prompt.md) — a reusable prompt (v1.1) for AI agents to extract metadata into the Excel template with full quality-assurance checks.
 4. **A complexity classification methodology** [`complexity-methodology.md`](complexity-methodology.md) — decision-tree rules for classifying benchmarks as `Popular`, `High`, `Medium`, or `Low` complexity.
@@ -36,23 +36,32 @@ AISafetyBenchExplorer is an open research tool that maintains a structured, anno
 
 ```
 AISAFETYBENCHEXPLORER/
-├── AISafetyBenchExplorer.xlsx               # Master catalogue (182+ benchmarks)
+├── README.md
+├── LICENCE-CODE
+├── LICENCE-DATA
+│
+├── AISafetyBenchExplorer.xlsx              # Master catalogue (182+ benchmarks)
 ├── safety-benchmarks-eval-metrics-catalogue.xlsx  # Evaluation metrics catalogue
 ├── AISafety_Benchmark_Extraction_Master_Prompt.md # AI extraction master prompt (v1.1)
-├── complexity-methodology.md                # Complexity classification methodology
-├── README.md                                # This file
-├── requirements_doi_pipeline.txt            # Python dependencies
+├── complexity-methodology.md               # Complexity classification methodology
+├── doi_metadata_enricher.py                # Extracts DOIs from URLs, queries and crossref
+├── requirements_doi_pipeline.txt           # Python dependencies
+├── github_scrapper.py                      # Scrapes and extracts metadata from Github
+├── hf_scrapper.py                          # Scareps and extracts metadat from HF
+├── research_gap_heatmap.py
+├── use_case_filter.py
 │
-├── api_models.py          # Pydantic models for API responses (~230 lines)
+├── doi_based_module/
+│
+├── models.py              # Pydantic models for API responses (~230 lines)
 ├── doi_based_resolver.py  # Multi-API metadata aggregator (~535 lines)
 ├── doi_pipeline.py        # DOI → extraction orchestrator (~537 lines)
 ├── doi_extractor_cli.py   # Command-line interface (~380 lines)
-│
-├── models.py                  # Shared Pydantic models for benchmark metadata
-├── enhanced_mainExtractor.py  # LLM-based structured metadata extractor
-├── enhanced_pdf_parser.py     # PDF → Markdown conversion (multi-backend)
-├── latex_aware_chunker.py     # LaTeX-aware text chunker for long papers
-└── integrated_paperParser.py  # Original PDF-based pipeline (still supported)
+├── grobid_parser.py       # GROBID-Based Structured Metadata Extractor
+├── mainExtractor.py       # LLM-based structured metadata extractor
+├── pdf_parser.py          # PDF → Markdown conversion (multi-backend)
+├── chunker.py             # LaTeX-aware text chunker for long papers
+└── repo_extractor.py      # Multi-strategy extraction of GitHub, HuggingFace, and Kaggle URLs from papers.
 ```
 
 **Total pipeline code:** ~1,700 lines of production-ready Python.
@@ -128,14 +137,14 @@ DOI / arXiv ID
                 │  AggregatedMetadata object
                 ▼
 ┌─────────────────────────────────────────────┐
-│  [Optional] enhanced_pdf_parser.py          │
+│  [Optional] pdf_parser.py          │
 │  PDF → Markdown via PyMuPDF / marker-pdf /  │
-│  nougat-ocr  →  latex_aware_chunker.py      │
+│  nougat-ocr  →  chunker.py      │
 └───────────────┬─────────────────────────────┘
                 │  text chunks + format hint
                 ▼
 ┌─────────────────────────────────────────────┐
-│  enhanced_mainExtractor.py                  │
+│  mainExtractor.py                  │
 │  LLM extraction (instructor + OpenAI or     │
 │  Ollama) guided by API metadata context     │
 │  → cross-validated against API values       │
@@ -164,7 +173,7 @@ For manual or agent-assisted extraction from any source (PDF, HTML, or arXiv pag
 
 ### Pipeline C — PDF-Based Pipeline (Legacy, Still Supported)
 
-The original `integrated_paperParser.py` accepts a local PDF file and uses `pdf_parser.py` + `chunker.py` + `mainExtractor.py` without any API enrichment.
+The original `pdf_parser.py` accepts a local PDF file and uses `chunker.py` + `mainExtractor.py` without any API enrichment.
 
 ```
 PDF file → pdf_parser.py → chunker.py → mainExtractor.py → metadata dict
@@ -283,8 +292,8 @@ print(f"Needs review: {quality.requires_human_review}")
 
 ```python
 from doi_based_resolver import DOIMetadataResolver
-from enhanced_pdf_parser import parse_pdf_to_markdown
-from enhanced_mainExtractor import EnhancedPaperMetadataExtractor
+from pdf_parser import parse_pdf_to_markdown
+from mainExtractor import EnhancedPaperMetadataExtractor
 
 # 1. Enrich from APIs
 resolver = DOIMetadataResolver(email="your@email.com")
@@ -468,4 +477,44 @@ All `Task Type`, `Entry Modalities`, `Integration`, `Created By`, and `Developme
 - **Abiodun Solanke, Ph.D.** aisafetybenchexplorer@gmail.com
 
 
-*Questions or issues? Open a GitHub issue or consult the inline documentation in each Python module.*
+*Questions or issues? Open a GitHub issue or consult the inline documentation in each Python module or email.*
+
+## Citation
+
+Use the paper citation when referring to the claims, analysis, taxonomy, or narrative in the arXiv manuscript.
+Use the GitHub citation when pointing readers to code, extraction logic, prompts, or repository-maintained materials, and use the workbook citation when referring to the live spreadsheet catalogue itself
+
+```bash
+# Paper
+    @misc{solanke2026aisafetybenchexplorer,
+    author       = {Abiodun A. Solanke},
+    title        = {AISafetyBenchExplorer: A Metric-Aware Catalogue of AI Safety Benchmarks Reveals Fragmented Measurement and Weak Benchmark Governance},
+    year         = {2026},
+    eprint       = {2604.12875},
+    archivePrefix= {arXiv},
+    primaryClass = {cs.AI},
+    doi          = {10.48550/arXiv.2604.12875},
+    url          = {https://arxiv.org/abs/2604.12875},
+    note         = {arXiv preprint}
+    }
+
+# Github
+    @misc{aisafetybenchexplorer_github,
+    author       = {Solanke, Abiodun A.},
+    title        = {AISafetyBenchExplorer},
+    year         = {2026},
+    howpublished = {\url{https://github.com/spyderweb-abdul/AISAFETYBENCHEXPLORER}},
+    note         = {GitHub repository, accessed 2026-04-15}
+    }
+
+# Workbook Sheet
+
+    @misc{aisafetybenchexplorer_workbook2026,
+    author       = {{AISafetyBenchExplorer Project}},
+    title        = {{AISafetyBenchExplorer v1.1}: Workbook-Backed Catalogue of AI Safety Benchmarks},
+    year         = {2026},
+    howpublished = {\url{https://tinyurl.com/AISafetyBenchExplorer}},
+    note         = {Google Sheets workbook, accessed 2026-04-15}
+    }
+
+```
